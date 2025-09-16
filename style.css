@@ -21,10 +21,19 @@ h1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    background-color: white;
     border: 10px solid red;
     margin: 20px auto;
 }
 
 .cell {
     border: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+.cell-color {
+    background-color: black;
+}
+
+.colored-cell-border {
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
