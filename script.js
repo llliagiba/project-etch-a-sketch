@@ -9,9 +9,29 @@ const randomColorButton = document.querySelector(".random");
 const shadeButton = document.querySelector(".shade");
 const eraseButton = document.querySelector(".eraser");
 const clearButton = document.querySelector(".clear-sketchpad");
+let mode = "color";
 
-sliderValue.textContent = `${slider.value} x ${slider.value}`;
-sketchpad.style.width = sketchpad.style.height = `${gridContainerSize}px`;
+colorPicker.addEventListener("click", () => {
+    mode = "color";
+});
+
+randomColorButton.addEventListener("click", () => {
+    mode = "random";
+});
+
+shadeButton.addEventListener("click", () => {
+    mode = "shade";
+});
+
+eraseButton.addEventListener("click", () => {
+    mode = "erase";
+});
+
+clearButton.addEventListener("click", () => {
+    mode = "clear";
+    removeGrid();
+    displayGrid(slider.value);
+});
 
 function displayGrid(rows) {
     for (let i = 0; i < (rows * rows); i++) {
@@ -28,56 +48,28 @@ function removeGrid() {
     sketchpad.textContent = "";
 }
 
-function colorCells() {
-    function generateRandomCode() {
+function generateRandomColorCode() {
         const random = Math.floor(Math.random() * 256);
         return random;
     }
 
-    let colorClicked;
-    colorPicker.addEventListener("click", () => {
-        colorClicked = true;
-        randomClicked = false;
-        shadeClicked = false;
-        eraseClicked = false;
-    });
-
-    let randomClicked;
-    randomColorButton.addEventListener("click", () => {
-        randomClicked = true;
-        colorClicked = false;
-        shadeClicked = false;
-        eraseClicked = false;
-    });
-
-    let shadeClicked;
-    shadeButton.addEventListener("click", () => {
-        shadeClicked = true;
-        colorClicked = false;
-        randomClicked = false;
-        eraseClicked = false;
-    });
-
-    let eraseClicked;
-    eraseButton.addEventListener("click", () => {
-        eraseClicked = true;
-        colorClicked = false;
-        randomClicked = false; 
-        shadeClicked = false;
-    });
-
+function colorCells() {
     const gridCells = document.querySelectorAll(".cell");
     gridCells.forEach((cell) => {
         let opacity = 0;
         cell.addEventListener("mouseover", () => {
-            if (randomClicked) {
-                const red = generateRandomCode();
-                const green = generateRandomCode();
-                const blue = generateRandomCode();
-
-                cell.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 0.3)`;
+            if (mode === "color") {
+                const colorHexCode = colorPicker.value;
+                cell.style.backgroundColor = `${colorHexCode}`;
                 cell.classList.add("colored-cell-border");
-            } else if (shadeClicked) {
+            } else if (mode === "random") {
+                const red = generateRandomColorCode();
+                const green = generateRandomColorCode();
+                const blue = generateRandomColorCode();
+
+                cell.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 0.5)`;
+                cell.classList.add("colored-cell-border");
+            } else if (mode === "shade") {
                 if (opacity > 1) {
                     opacity = 1;
                 } else {
@@ -85,27 +77,29 @@ function colorCells() {
                 }
                 cell.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
                 cell.classList.add("colored-cell-border");
-            } else if (colorClicked) {
-                const colorHexCode = colorPicker.value;
-                cell.style.backgroundColor = `${colorHexCode}`;
-                cell.classList.add("colored-cell-border");
-            } else if (eraseClicked) {
+            } else if (mode === "erase") {
                 cell.style.backgroundColor = 'rgb(255, 255, 255)';
+                cell.style.border = '1px solid rgb(0, 0, 0, 0.2)';
             }
         });
     });
 }
 
-// New grid based on slider value
+// Initial grid: on page load
+displayGrid(slider.value);
+colorCells();
+
+sliderValue.textContent = `${slider.value} x ${slider.value}`;
+
+sketchpad.style.width = sketchpad.style.height = `${gridContainerSize}px`;
+
+// New grid: based on slider value
 slider.addEventListener("input", () => {
     removeGrid();
     const newValue = slider.value;
-    sliderValue.textContent = `${slider.value} x ${slider.value}`;
+    sliderValue.textContent = `${newValue} x ${newValue}`;
     displayGrid(newValue);
     colorCells();
 });
 
-// Initial grid: on page load
-displayGrid(16);
-colorCells();
 
