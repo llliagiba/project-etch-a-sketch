@@ -3,8 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Etch-A-Freaking-Sketch</title>
         <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+        <script src="https://kit.fontawesome.com/3baf669c87.js" crossorigin="anonymous"></script>
+        <title>Etch-A-Freaking-Sketch</title>
     </head>
     <body>
         <h1>Etch-A-Freaking-Sketch</h1>
@@ -12,18 +14,15 @@
             <div class="sketchpad"></div>
         </div>
         <div class="slider-container">
-            <!-- <button class="change-grid-size">Change resolution</button> -->
              <input class = "slider" type="range" min="2" max="100" value="16">
              <p class="slider-value">22 x 22</p>
         </div>
         <div class="tools-container">
-            <!-- <button class="color">COLOR ICON PLACEHOLDER</button> -->
             <input type="color" class="color-picker" value="#000000">
-            <button class="random">RANDOM ICON PLACEHOLDER</button>
-            <button class="shade">SHADE ICOON PLACEHOLDER</button>
-            <button class="eraser">ERASER ICON PLACEHOLDER</button>
+            <button class="random"><i class="fa-solid fa-rainbow"></i></button>
+            <button class="shade"><i class="fa-solid fa-circle-half-stroke"></i></button>
+            <button class="eraser"><i class="fa-solid fa-eraser"></i></button>
+            <button class="clear-sketchpad"><i class="fa-solid fa-trash"></i></button>
         </div>
-        <button class="clear-sketchpad">CLEAR SKETCHPAD</button>
-        <script src="script.js"></script>
     </body>
 </html>

@@ -31,6 +31,7 @@ clearButton.addEventListener("click", () => {
     mode = "clear";
     removeGrid();
     displayGrid(slider.value);
+    colorCells();
 });
 
 function displayGrid(rows) {
