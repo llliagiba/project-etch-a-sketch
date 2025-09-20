@@ -4,9 +4,11 @@ const sketchpad = document.querySelector(".sketchpad");
 const sliderContainer = document.querySelector(".slider-container");
 const slider = document.querySelector(".slider");
 const sliderValue = document.querySelector(".slider-value");
-const colorPickerButton = document.querySelector(".color");
+const colorPicker = document.querySelector(".color-picker");
 const randomColorButton = document.querySelector(".random");
 const shadeButton = document.querySelector(".shade");
+const eraseButton = document.querySelector(".eraser");
+const clearButton = document.querySelector(".clear-sketchpad");
 
 sliderValue.textContent = `${slider.value} x ${slider.value}`;
 sketchpad.style.width = sketchpad.style.height = `${gridContainerSize}px`;
@@ -33,10 +35,11 @@ function colorCells() {
     }
 
     let colorClicked;
-    colorPickerButton.addEventListener("click", () => {
+    colorPicker.addEventListener("click", () => {
         colorClicked = true;
         randomClicked = false;
         shadeClicked = false;
+        eraseClicked = false;
     });
 
     let randomClicked;
@@ -44,6 +47,7 @@ function colorCells() {
         randomClicked = true;
         colorClicked = false;
         shadeClicked = false;
+        eraseClicked = false;
     });
 
     let shadeClicked;
@@ -51,6 +55,15 @@ function colorCells() {
         shadeClicked = true;
         colorClicked = false;
         randomClicked = false;
+        eraseClicked = false;
+    });
+
+    let eraseClicked;
+    eraseButton.addEventListener("click", () => {
+        eraseClicked = true;
+        colorClicked = false;
+        randomClicked = false; 
+        shadeClicked = false;
     });
 
     const gridCells = document.querySelectorAll(".cell");
@@ -63,6 +76,7 @@ function colorCells() {
                 const blue = generateRandomCode();
 
                 cell.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 0.3)`;
+                cell.classList.add("colored-cell-border");
             } else if (shadeClicked) {
                 if (opacity > 1) {
                     opacity = 1;
@@ -70,10 +84,13 @@ function colorCells() {
                     opacity += 0.1;
                 }
                 cell.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
-            } else {
-                // might have to change this to style.backgroundColor because user should be able to PICK a color 
-                cell.classList.add("cell-color");
                 cell.classList.add("colored-cell-border");
+            } else if (colorClicked) {
+                const colorHexCode = colorPicker.value;
+                cell.style.backgroundColor = `${colorHexCode}`;
+                cell.classList.add("colored-cell-border");
+            } else if (eraseClicked) {
+                cell.style.backgroundColor = 'rgb(255, 255, 255)';
             }
         });
     });
